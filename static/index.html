@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
+    <title>Aspi Family Bridge</title>
+
+    <link
+        rel="icon"
+        type="image/svg+xml"
+        href="/icon.svg"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/style.css"
+    >
+</head>
+
+<body>
+
+<div class="page-container">
+
+    <h1>Aspi Family Bridge</h1>
+
+    <section
+        id="welcome"
+        class="welcome-screen"
+    >
+
+        <div class="welcome-card">
+
+            <div class="welcome-suits">
+                <span class="black-suit">♠</span>
+                <span class="red-suit">♥</span>
+                <span class="black-suit">♣</span>
+                <span class="red-suit">♦</span>
+            </div>
+
+            <h1 class="welcome-title">
+                Aspi Family Bridge
+            </h1>
+
+            <p class="welcome-subtitle">
+                Соберите семью за одним карточным столом
+            </p>
+
+
+            <div class="welcome-form">
+
+                <label for="player-name">
+                    Ваше имя
+                </label>
+
+                <input
+                    id="player-name"
+                    type="text"
+                    placeholder="Например, Алекс"
+                    autocomplete="name"
+                >
+
+
+                <button
+                    id="create-room"
+                    class="primary-button"
+                >
+                    Создать комнату
+                </button>
+
+
+                <div class="welcome-separator">
+
+                    <span></span>
+
+                    <div>или</div>
+
+                    <span></span>
+
+                </div>
+
+
+                <label for="room-code">
+                    Код комнаты
+                </label>
+
+                <input
+                    id="room-code"
+                    type="text"
+                    placeholder="ABCD"
+                    maxlength="4"
+                    autocomplete="off"
+                    class="room-code-input"
+                >
+
+
+                <button
+                    id="join-room"
+                    class="secondary-button"
+                >
+                    Войти в комнату
+                </button>
+
+            </div>
+
+
+            <div class="welcome-footer">
+                До 7 игроков · одна Wi-Fi сеть или интернет
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section
+        id="room"
+        class="hidden"
+    >
+        <h2>
+            Комната:
+            <span id="room-code-display"></span>
+        </h2>
+
+        <h3>Игроки</h3>
+
+        <div id="players"></div>
+
+        <div
+            id="host-controls"
+            class="hidden"
+        >
+            <input
+                id="target-score"
+                type="number"
+                placeholder="Очки для победы"
+                value="100"
+            >
+
+            <input
+                id="max-rounds"
+                type="number"
+                placeholder="Количество партий"
+            >
+
+            <button id="start-game">
+                Начать игру
+            </button>
+        </div>
+
+        <section
+            id="game"
+            class="hidden"
+        >
+            <div class="game-header">
+
+                <div>
+                    Партия:
+                    <strong id="round-number"></strong>
+                </div>
+
+                <div>
+                    Ход:
+                    <strong id="current-player"></strong>
+                </div>
+
+                <div>
+                    Фаза:
+                    <strong id="phase"></strong>
+                </div>
+
+                <div>
+                    Колода:
+                    <strong id="deck"></strong>
+                </div>
+
+            </div>
+
+
+            <!-- Основной игровой стол -->
+            <div class="game-table">
+
+                <!-- Зоны, где лежат карты игроков -->
+                <div id="player-tables"></div>
+
+
+                <!-- Центр стола -->
+                <div class="table-center">
+
+                    <div class="deck-area">
+                        <div class="area-title">
+                            Колода
+                        </div>
+
+                        <div
+                            id="deck-card"
+                            class="card card-back"
+                        >
+                            🂠
+                        </div>
+                    </div>
+
+
+                    <div class="discard-area">
+                        <div class="area-title">
+                            Сброс
+                        </div>
+
+                        <div
+                            id="discard"
+                            class="cards discard-cards"
+                        ></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Рука текущего пользователя -->
+            <div class="my-area">
+
+                <h3>Моя рука</h3>
+
+                <div
+                    id="hand"
+                    class="cards hand"
+                ></div>
+
+
+                <div id="game-controls">
+
+                    <!-- <button id="draw-deck">
+                        Взять из колоды
+                    </button> -->
+
+                    <button id="draw-discard">
+                        Взять из сброса
+                    </button>
+
+                    <button id="create-meld">
+                        Выложить комбинацию
+                    </button>
+
+                    <button id="extend-meld">
+                        Добавить к комбинации
+                    </button>
+
+                    <button id="discard-card">
+                        Сбросить карту
+                    </button>
+
+                    <!-- <button id="clear-selection">
+                        Снять выбор
+                    </button> -->
+
+                </div>
+
+                <div
+                    id="game-error"
+                    class="error"
+                ></div>
+
+            </div>
+
+            <div
+                id="round-over-overlay"
+                class="round-overlay hidden"
+            >
+
+                <div class="round-result">
+
+                    <div class="round-result-title">
+                        Раунд окончен
+                    </div>
+
+                    <div
+                        id="round-winner"
+                        class="round-winner"
+                    ></div>
+
+                    <div
+                        id="round-scores"
+                        class="round-scores"
+                    ></div>
+
+                    <button
+                        id="next-round"
+                        class="hidden"
+                    >
+                        Следующий раунд
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </section>
+
+</div>
+
+<script src="/game.js"></script>
+
+</body>
+</html>
