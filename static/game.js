@@ -19,7 +19,7 @@ function clearSession() {
     localStorage.removeItem(SESSION_KEY);
 }
 
-function loadSession() {
+function loadSession() {а
     const raw =
         localStorage.getItem(SESSION_KEY);
 
@@ -281,9 +281,39 @@ function connectWebSocket() {
         }
     };
 
-    socket.onclose = () => {
+    socket.onclose = event => {
+
         console.log(
-            "WebSocket disconnected"
+            "WebSocket disconnected",
+            event.code
+        );
+
+        if (event.code !== 4001) {
+            return;
+        }
+
+        clearSession();
+
+        roomCode = null;
+        playerId = null;
+        currentState = null;
+
+        roomSection.classList.add(
+            "hidden"
+        );
+
+        gameSection.classList.add(
+            "hidden"
+        );
+
+        welcome.classList.remove(
+            "hidden"
+        );
+
+        alert(
+            "Старая игровая сессия больше " +
+            "не существует. Создайте новую " +
+            "комнату или присоединитесь к другой."
         );
     };
 }

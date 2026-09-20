@@ -122,6 +122,21 @@ async def websocket_endpoint(
     code = code.upper()
 
     try:
+        room = manager.get_room(code)
+
+        manager.get_player(
+            room,
+            player_id,
+        )
+
+    except ValueError:
+        await websocket.accept()
+        await websocket.close(
+            code=4001  # код означает "сохранённая игровая сессия больше не существует"
+        )
+        return
+
+    try:
         await manager.connect(
             code,
             player_id,
@@ -151,11 +166,6 @@ async def websocket_endpoint(
             code,
             player_id,
             websocket,
-        )
-
-    except ValueError:
-        await websocket.close(
-            code=1008
         )
 
 static_dir = (
