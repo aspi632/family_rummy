@@ -470,6 +470,21 @@ function renderRoundOver(state) {
             "round-over-overlay"
         );
 
+    const newGameButton =
+        document.getElementById(
+            "new-game"
+        );
+
+    if (state.game.match_over) {
+        newGameButton.classList.remove(
+            "hidden"
+        );
+    } else {
+        newGameButton.classList.add(
+            "hidden"
+        );
+    }
+
 
     if (
         state.game.phase !==
@@ -1190,6 +1205,12 @@ document.getElementById(
     });
 };
 
+document.getElementById(
+    "new-game"
+).onclick = () => {
+    leaveRoom();
+};
+
 function cardImageName(card) {
 
     const ranks = {
@@ -1221,6 +1242,35 @@ function cardImageName(card) {
         suits[card.suit] +
         ranks[card.rank] +
         ".svg"
+    );
+}
+
+
+function leaveRoom() {
+
+    clearSession();
+
+    if (socket) {
+        socket.close();
+        socket = null;
+    }
+
+    roomCode = null;
+    playerId = null;
+    currentState = null;
+
+    clearSelection();
+
+    gameSection.classList.add(
+        "hidden"
+    );
+
+    roomSection.classList.add(
+        "hidden"
+    );
+
+    welcome.classList.remove(
+        "hidden"
     );
 }
 
