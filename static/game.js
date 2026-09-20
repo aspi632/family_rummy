@@ -19,7 +19,7 @@ function clearSession() {
     localStorage.removeItem(SESSION_KEY);
 }
 
-function loadSession() {а
+function loadSession() {
     const raw =
         localStorage.getItem(SESSION_KEY);
 

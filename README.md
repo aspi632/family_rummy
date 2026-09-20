@@ -4,7 +4,7 @@
 >
 > This is the canonical context document for the Family Rummy project.
 > It is intended to be readable by the project owner and detailed enough
-> for ChatGPT (or another developer) to reconstruct the project's
+> for any AI (or another developer) to reconstruct the project's
 > architecture, rules, design decisions, current state, and next steps
 > without relying on previous conversations.
 >
@@ -121,22 +121,21 @@ family-rummy/
 │   ├── style.css
 │   ├── icon.svg
 │   └── cards/
-│       ├── AC.svg
-│       ├── 2C.svg
+│       ├── C2.svg
 │       ├── ...
-│       ├── KS.svg
-│       └── BACK.svg
+│       ├── CA.svg
+│       ├── ...
+│       └── SQ.svg
 │
 ├── tests/
 │   ├── test_rules.py
 │   └── test_game.py
 │
 ├── requirements.txt
-├── README.md
-└── PROJECT_CONTEXT.md
+└── README.md
 ```
 
-This document should live at the project root as `PROJECT_CONTEXT.md`.
+This document should live at the project root as `README.md`.
 
 ------------------------------------------------------------------------
 
@@ -1498,7 +1497,7 @@ If you only have a few minutes, remember these points:
 
 ## Document maintenance
 
-**Canonical filename:** `PROJECT_CONTEXT.md`
+**Canonical filename:** `README.md`
 
 When future work materially changes the project, update the relevant
 section rather than appending a chronological chat log. This file should
