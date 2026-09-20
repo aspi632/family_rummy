@@ -312,7 +312,7 @@ class RoomManager:
         while True:
             code = "".join(
                 random.choices(
-                    string.ascii_uppercase,
+                    string.digits,
                     k=4,
                 )
             )
