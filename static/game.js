@@ -3,6 +3,52 @@ let playerId = null;
 let socket = null;
 let currentState = null;
 
+const SESSION_KEY = "family_rummy_session";
+
+function saveSession() {
+    localStorage.setItem(
+        SESSION_KEY,
+        JSON.stringify({
+            roomCode: roomCode,
+            playerId: playerId,
+        })
+    );
+}
+
+function clearSession() {
+    localStorage.removeItem(SESSION_KEY);
+}
+
+function loadSession() {
+    const raw =
+        localStorage.getItem(SESSION_KEY);
+
+    if (!raw) {
+        return false;
+    }
+
+    try {
+        const session = JSON.parse(raw);
+
+        if (
+            !session.roomCode ||
+            !session.playerId
+        ) {
+            clearSession();
+            return false;
+        }
+
+        roomCode = session.roomCode;
+        playerId = session.playerId;
+
+        return true;
+
+    } catch {
+        clearSession();
+        return false;
+    }
+}
+
 let selectedHandIndices = new Set();
 let selectedDiscardIndices = new Set();
 let selectedMeldId = null;
@@ -185,6 +231,8 @@ function enterRoom(
 ) {
     roomCode = code;
     playerId = id;
+
+    saveSession();
 
     welcome.classList.add(
         "hidden"
@@ -598,86 +646,6 @@ function renderDiscard(cards) {
 }
 
 
-// function createCardElement(card) {
-
-//     const div =
-//         document.createElement(
-//             "div"
-//         );
-
-//     div.className =
-//         "playing-card";
-
-
-//     const rank =
-//         cardRankText(card);
-
-//     const suit =
-//         cardSuitText(card);
-
-
-//     if (
-//         card.suit === "hearts" ||
-//         card.suit === "diamonds"
-//     ) {
-//         div.classList.add("red");
-//     } else {
-//         div.classList.add("black");
-//     }
-
-
-//     const cornerTop =
-//         document.createElement(
-//             "div"
-//         );
-
-//     cornerTop.className =
-//         "card-corner top-left";
-
-//     cornerTop.innerHTML = `
-//         <div>${rank}</div>
-//         <div>${suit}</div>
-//     `;
-
-
-//     const cornerBottom =
-//         document.createElement(
-//             "div"
-//         );
-
-//     cornerBottom.className =
-//         "card-corner bottom-right";
-
-//     cornerBottom.innerHTML = `
-//         <div>${rank}</div>
-//         <div>${suit}</div>
-//     `;
-
-
-//     div.appendChild(
-//         cornerTop
-//     );
-
-
-//     const center =
-//         createCardCenter(
-//             card,
-//             suit
-//         );
-
-//     div.appendChild(
-//         center
-//     );
-
-
-//     div.appendChild(
-//         cornerBottom
-//     );
-
-//     return div;
-// }
-
-
 function createCardElement(card) {
 
     const div =
@@ -711,102 +679,6 @@ function createCardElement(card) {
 
     return div;
 }
-
-
-// function createCardCenter(
-//     card,
-//     suit
-// ) {
-
-//     const container =
-//         document.createElement(
-//             "div"
-//         );
-
-//     container.className =
-//         "card-center";
-
-
-//     if (card.rank === "ACE") {
-
-//         container.classList.add(
-//             "ace-center"
-//         );
-
-//         container.textContent =
-//             suit;
-
-//         return container;
-//     }
-
-
-//     if (
-//         card.rank === "JACK" ||
-//         card.rank === "QUEEN" ||
-//         card.rank === "KING"
-//     ) {
-
-//         container.classList.add(
-//             "face-card"
-//         );
-
-
-//         const figures = {
-//             JACK: "♞",
-//             QUEEN: "♛",
-//             KING: "♚",
-//         };
-
-
-//         container.innerHTML = `
-//             <div class="face-symbol">
-//                 ${figures[card.rank]}
-//             </div>
-
-//             <div class="face-rank">
-//                 ${cardRankText(card)}
-//             </div>
-
-//             <div class="face-suit">
-//                 ${suit}
-//             </div>
-//         `;
-
-//         return container;
-//     }
-
-
-//     const number =
-//         Number(
-//             cardRankText(card)
-//         );
-
-//     container.classList.add(
-//         `pip-layout-${number}`
-//     );
-
-
-//     for (
-//         let i = 0;
-//         i < number;
-//         i++
-//     ) {
-
-//         const pip =
-//             document.createElement(
-//                 "span"
-//             );
-
-//         pip.className = "pip";
-
-//         pip.textContent = suit;
-
-//         container.appendChild(pip);
-//     }
-
-
-//     return container;
-// }
 
 
 function cardRankText(card) {
@@ -1264,22 +1136,6 @@ document.getElementById(
     });
 };
 
-
-// 17. Снять весь текущий выбор
-// document.getElementById(
-//     "clear-selection"
-// ).onclick = () => {
-
-//     clearSelection();
-
-//     // Перерисовываем интерфейс,
-//     // чтобы убрать CSS-класс selected.
-//     renderGame(
-//         currentState
-//     );
-// };
-
-
 function clearSelection() {
     selectedHandIndices.clear();
     selectedDiscardIndices.clear();
@@ -1336,4 +1192,22 @@ function cardImageName(card) {
         ranks[card.rank] +
         ".svg"
     );
+}
+
+
+if (loadSession()) {
+
+    welcome.classList.add(
+        "hidden"
+    );
+
+    roomSection.classList.remove(
+        "hidden"
+    );
+
+    document.getElementById(
+        "room-code-display"
+    ).textContent = roomCode;
+
+    connectWebSocket();
 }

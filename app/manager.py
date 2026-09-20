@@ -166,16 +166,24 @@ class RoomManager:
         self,
         code: str,
         player_id: str,
+        websocket: WebSocket,
     ) -> None:
         try:
             room = self.get_room(code)
         except ValueError:
             return
 
-        room.connections.pop(
-            player_id,
-            None,
+        current_socket = (
+            room.connections.get(
+                player_id
+            )
         )
+
+        if current_socket is websocket:
+            room.connections.pop(
+                player_id,
+                None,
+            )
 
     async def broadcast(
         self,

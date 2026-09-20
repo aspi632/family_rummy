@@ -150,6 +150,7 @@ async def websocket_endpoint(
         manager.disconnect(
             code,
             player_id,
+            websocket,
         )
 
     except ValueError:
