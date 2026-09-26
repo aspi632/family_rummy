@@ -172,14 +172,8 @@ button {
 
 .player-melds {
     display: flex;
-    align-items: center;
-
-    /* комбинация не раздвигается на полную ширину */
-    width: fit-content;
-}
-
-.player-melds .playing-card + .playing-card {
-    margin-left: -30px;
+    flex-wrap: wrap;
+    gap: 12px;
 }
 
 
