@@ -515,7 +515,7 @@ function renderRoundOver(state) {
         "round-winner"
     ).textContent =
         winner
-            ? `🏆 ${winner.name} выиграл раунд!`
+            ? `🏆 ${winner.name} выиграл(а) раунд!`
             : "Раунд окончен";
 
 

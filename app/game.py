@@ -111,14 +111,20 @@ class Game:
 
         self.phase = TurnPhase.DRAW
 
-    def draw_from_deck(self, player_id: str) -> Card:
+    def draw_from_deck(
+        self,
+        player_id: str,
+    ) -> Card | None:
+
         self._require_turn(player_id)
         self._require_phase(TurnPhase.DRAW)
 
         if not self.deck:
-            raise GameError("Deck is empty")
+            self._finish_round()
+            return None
 
         card = self.deck.pop()
+
         self.current_player.hand.append(card)
 
         self.phase = TurnPhase.PLAY
@@ -371,21 +377,43 @@ class Game:
         if self.current_player.hand:
             return False
 
-        winner = self.current_player
-
-        self.round_winner_id = winner.id
-        self.previous_winner_id = winner.id
-        self.phase = TurnPhase.ROUND_OVER
-
-        round_scores = self.calculate_round_scores()
-        self.last_round_scores = round_scores
-
-        for player in self.players:
-            player.score += round_scores[player.id]
-
-        self._check_match_end()
+        self._finish_round(
+            winner_id=self.current_player.id,
+        )
 
         return True
+
+    def _finish_round(
+        self,
+        winner_id: str | None = None,
+    ) -> None:
+
+        round_scores = (
+            self.calculate_round_scores()
+        )
+
+        self.last_round_scores = round_scores
+
+        # Обычный случай:
+        # игрок закончил все карты.
+        if winner_id is None:
+            winner_id = max(
+                self.players,
+                key=lambda player:
+                    round_scores[player.id],
+            ).id
+
+        self.round_winner_id = winner_id
+        self.previous_winner_id = winner_id
+
+        self.phase = TurnPhase.ROUND_OVER
+
+        for player in self.players:
+            player.score += (
+                round_scores[player.id]
+            )
+
+        self._check_match_end()
 
     def start_next_round(
         self,

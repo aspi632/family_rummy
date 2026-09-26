@@ -493,3 +493,44 @@ def test_selected_discard_card_must_be_used_in_meld():
                 C(Rank.SEVEN),
             ],
         )
+
+def test_empty_deck_ends_round_and_scores_current_state():
+    game = make_game()
+
+    alice = game.players[0]
+    bob = game.players[1]
+
+    game.current_player_index = 0
+    game.phase = TurnPhase.DRAW
+
+    game.deck = []
+
+    alice.hand = [
+        C(Rank.KING),
+    ]
+
+    bob.hand = [
+        C(Rank.TWO),
+    ]
+
+    game.draw_from_deck(
+        "alice"
+    )
+
+    assert (
+        game.phase
+        == TurnPhase.ROUND_OVER
+    )
+
+    assert game.last_round_scores[
+        "alice"
+    ] == -10
+
+    assert game.last_round_scores[
+        "bob"
+    ] == -5
+
+    assert (
+        game.round_winner_id
+        == "bob"
+    )
