@@ -527,31 +527,42 @@ function renderRoundOver(state) {
     scoresContainer.innerHTML = "";
 
 
+    const sortedPlayers = [
+        ...state.players
+    ].sort(
+        (a, b) => b.score - a.score
+    );
+
     for (
         const player
         of state.players
     ) {
-
         const delta =
             state.game.last_round_scores[
                 player.id
             ] ?? 0;
 
-
         const row =
-            document.createElement(
-                "div"
-            );
+            document.createElement("div");
 
-        row.className =
-            "score-row";
-
+        row.className = "score-row";
 
         const sign =
-            delta > 0
-                ? "+"
-                : "";
+            delta > 0 ? "+" : "";
 
+        const place =
+            sortedPlayers.findIndex(
+                p => p.id === player.id
+            ) + 1;
+
+        const placeIcon =
+            place === 1
+                ? "🥇"
+                : place === 2
+                    ? "🥈"
+                    : place === 3
+                        ? "🥉"
+                        : "";
 
         row.innerHTML = `
             <span>
@@ -563,14 +574,12 @@ function renderRoundOver(state) {
             </span>
 
             <strong>
+                ${placeIcon}
                 ${player.score}
             </strong>
         `;
 
-
-        scoresContainer.appendChild(
-            row
-        );
+        scoresContainer.appendChild(row);
     }
 
 
