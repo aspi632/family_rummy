@@ -482,26 +482,6 @@ button {
 }
 
 
-#game-controls button {
-    border: none;
-
-    border-radius: 8px;
-
-    background: #ececec;
-
-    padding: 10px 14px;
-
-    font-weight: 600;
-
-    cursor: pointer;
-}
-
-
-#game-controls button:hover {
-    background: #dddddd;
-}
-
-
 .error {
     color: #c62828;
 
@@ -1056,4 +1036,103 @@ button {
     color: #888;
 
     font-size: 12px;
+}
+
+
+#draw-discard {
+    background: #38598a;
+    color: white;
+
+    border: none;
+    border-radius: 8px;
+
+    font-weight: 700;
+
+    box-shadow:
+        0 4px 10px
+        rgba(0, 0, 0, 0.18);
+
+    transition:
+        transform 0.12s ease,
+        box-shadow 0.12s ease,
+        background 0.12s ease;
+}
+
+#draw-discard:hover {
+    background: #25684b;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 6px 14px
+        rgba(0, 0, 0, 0.24);
+}
+
+#discard-card {
+    background: #d96b3b;
+    color: white;
+
+    border: none;
+    border-radius: 8px;
+
+    font-weight: 700;
+
+    box-shadow:
+        0 4px 10px
+        rgba(0, 0, 0, 0.18);
+
+    transition:
+        transform 0.12s ease,
+        box-shadow 0.12s ease,
+        background 0.12s ease;
+}
+
+#discard-card:hover {
+    background: #bf572c;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 6px 14px
+        rgba(0, 0, 0, 0.24);
+}
+
+/* .game-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#draw-discard {
+    margin-right: 14px;
+}
+
+#discard-card {
+    margin-left: 14px;
+} */
+
+#create-meld {
+    border: none;
+    border-radius: 8px;
+    background: #ececec;
+    padding: 10px 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#create-meld:hover {
+    background: #dddddd;
+}
+
+#extend-meld {
+    border: none;
+    border-radius: 8px;
+    background: #ececec;
+    padding: 10px 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#extend-meld:hover {
+    background: #dddddd;
 }
